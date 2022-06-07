@@ -1,16 +1,16 @@
-import { createReducer, current } from "@reduxjs/toolkit";
-import actions from "./actions";
-import { nanoid } from "nanoid";
+import { createReducer, current } from '@reduxjs/toolkit';
+import actions from './actions';
+import { nanoid } from 'nanoid';
 
 let initialState = {
   boards: [
     {
       [nanoid()]: {
-        name: "In process",
+        name: 'In process',
         items: [],
       },
       [nanoid()]: {
-        name: "Done",
+        name: 'Done',
         items: [],
       },
     },
@@ -28,7 +28,7 @@ const tasksReducer = createReducer(initialState, {
     let newItemToBoards = {};
     newItemToBoards = JSON.parse(JSON.stringify(payloadBoards));
 
-    Object.entries(newItemToBoards).map((board) => {
+    Object.entries(newItemToBoards).map(board => {
       if (board[1].name === payloadCurrentBoard) {
         board[1].items.push(payloadTask);
       }
@@ -48,10 +48,10 @@ const tasksReducer = createReducer(initialState, {
     let newItemToBoards = {};
     newItemToBoards = JSON.parse(JSON.stringify(payloadBoards));
 
-    Object.entries(newItemToBoards).map((board) => {
+    Object.entries(newItemToBoards).map(board => {
       if (board[1].name === payloadCurrentBoard) {
         board[1].items = board[1].items.filter(
-          (item) => item.id !== payloadCurrentTaskId
+          item => item.id !== payloadCurrentTaskId
         );
       }
       return board;
@@ -70,12 +70,13 @@ const tasksReducer = createReducer(initialState, {
     let newItemToBoards = {};
     newItemToBoards = JSON.parse(JSON.stringify(payloadBoards));
 
-    Object.entries(newItemToBoards).map((board) => {
+    Object.entries(newItemToBoards).map(board => {
       if (board[1].name === payloadCurrentBoardName) {
-        board[1].items.map((item) => {
+        board[1].items.map(item => {
           if (item.id === payloadCurrentTaskId) {
             item.content = payloadCurrentTaskContent;
           }
+          return board;
         });
       }
       return board;
@@ -105,7 +106,7 @@ const tasksReducer = createReducer(initialState, {
       let newItemToBoards = {};
       newItemToBoards = JSON.parse(JSON.stringify(payload.boards));
 
-      Object.entries(newItemToBoards).map((board) => {
+      Object.entries(newItemToBoards).map(board => {
         if (board[1].name === sourceBoard.name) {
           board[1].items = sourceItems;
         }
@@ -127,7 +128,7 @@ const tasksReducer = createReducer(initialState, {
 
       let newItemToBoards = {};
       newItemToBoards = JSON.parse(JSON.stringify(payload.boards));
-      Object.entries(newItemToBoards).map((board) => {
+      Object.entries(newItemToBoards).map(board => {
         if (board[1].name === currentMoveBoard.name) {
           board[1].items = copiedItems;
         }
@@ -140,7 +141,7 @@ const tasksReducer = createReducer(initialState, {
     }
   },
 
-  [actions.undo]: (state) => {
+  [actions.undo]: state => {
     const currentState = current(state);
     let newCurrentIndex;
     if (currentState.currentIndex > 0) {
@@ -152,7 +153,7 @@ const tasksReducer = createReducer(initialState, {
     return state;
   },
 
-  [actions.redo]: (state) => {
+  [actions.redo]: state => {
     const currentState = current(state);
     let newCurrentIndex;
     if (currentState.currentIndex < currentState.boards.length - 1) {
